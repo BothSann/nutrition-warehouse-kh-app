@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
 import com.nutritionwarehouse.auth.component.GoogleButton
 import com.nutritionwarehouse.shared.Alpha
 import com.nutritionwarehouse.shared.BebaNeueFont
@@ -26,6 +31,8 @@ import rememberMessageBarState
 @Composable
 fun AuthScreen() {
     val messageBarState = rememberMessageBarState()
+    var loadingState by remember { mutableStateOf(false) }
+
     Scaffold { padding->
         ContentWithMessageBar(
             modifier = Modifier
@@ -65,10 +72,32 @@ fun AuthScreen() {
                         color = TextPrimary
                     )
                 }
-                GoogleButton (
-                    loading = false,
-                    onClick = {},
-                )
+                GoogleButtonUiContainerFirebase(
+                    linkAccount = false,
+                    onResult = {result ->
+                        result.onSuccess { user ->
+                            messageBarState.addSuccess("Authentication successful!")
+                            loadingState = false
+                        }.onFailure { error ->
+                            if(error.message?.contains("A network error") == true) {
+                                messageBarState.addError("Network error. Please try again later.")
+                            } else if (error.message?.contains("id token is null") == true) {
+                                messageBarState.addError("Google sign-in failed. Please try again.")
+                            } else {
+                                messageBarState.addError(error.message ?: "An error occurred during Google sign-in.")
+                            }
+                            loadingState = false
+                        }
+                    }
+                ) {
+                    GoogleButton (
+                        loading = loadingState,
+                        onClick = {
+                            loadingState = true
+                            this@GoogleButtonUiContainerFirebase.onClick()
+                        },
+                    )
+                }
             }
         }
     }

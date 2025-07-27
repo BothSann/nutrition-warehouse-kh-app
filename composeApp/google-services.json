@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "837786126150",
+    "project_id": "nutritionwarehouse",
+    "storage_bucket": "nutritionwarehouse.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837786126150:android:877832e483cedc32ca0747",
+        "android_client_info": {
+          "package_name": "org.itstep.nutritionwarehouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837786126150-r3gn2eai7erbs9ri3nmtrkcv21u7dtks.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.itstep.nutritionwarehouse",
+            "certificate_hash": "0585e225b925b93f062dc61b3d1ece877e90d461"
+          }
+        },
+        {
+          "client_id": "837786126150-lp0hqfgo6t8hejlu1sbe0g5m08vnjhb7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNbRiLs6h0P13ninRMIh7_YCPKXkAE2I4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837786126150-lp0hqfgo6t8hejlu1sbe0g5m08vnjhb7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
