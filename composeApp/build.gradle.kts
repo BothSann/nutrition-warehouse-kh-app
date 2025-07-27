@@ -36,6 +36,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.splash.screen)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -53,6 +54,7 @@ kotlin {
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":navigation"))
             implementation(project(path = ":shared"))
+            implementation(project(path = ":di"))
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
