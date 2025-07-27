@@ -11,6 +11,7 @@ val Orange = Color(0xFFF24C00)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 val Red = Color(0xFFDD0000)
+val Green = Color(0xFF00C951)
 
 val CategoryYellow = Color(0xFFFFC738)
 val CategoryBlue = Color(0xFF38B3FF)
@@ -23,6 +24,7 @@ val SurfaceLighter = GrayLighter
 val SurfaceDarker = Gray
 val SurfaceBrand = Yellowish
 val SurfaceError = Red
+val SurfaceSuccess = Green
 val SurfaceSecondary = Orange
 
 val BorderIdle = GrayDarker

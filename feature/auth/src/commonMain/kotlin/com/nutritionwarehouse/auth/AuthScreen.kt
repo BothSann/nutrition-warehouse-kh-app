@@ -24,8 +24,12 @@ import com.nutritionwarehouse.shared.Alpha
 import com.nutritionwarehouse.shared.BebaNeueFont
 import com.nutritionwarehouse.shared.FontSize
 import com.nutritionwarehouse.shared.Surface
+import com.nutritionwarehouse.shared.SurfaceBrand
+import com.nutritionwarehouse.shared.SurfaceError
+import com.nutritionwarehouse.shared.SurfaceSuccess
 import com.nutritionwarehouse.shared.TextPrimary
 import com.nutritionwarehouse.shared.TextSecondary
+import com.nutritionwarehouse.shared.TextWhite
 import rememberMessageBarState
 
 @Composable
@@ -42,7 +46,11 @@ fun AuthScreen() {
                 ),
             messageBarState = messageBarState,
             errorMaxLines = 2,
-            contentBackgroundColor = Surface
+            contentBackgroundColor = Surface,
+            errorContainerColor = SurfaceError,
+            errorContentColor = TextWhite,
+            successContainerColor = SurfaceSuccess,
+            successContentColor = TextWhite,
         ) {
             Column (
                 modifier = Modifier
