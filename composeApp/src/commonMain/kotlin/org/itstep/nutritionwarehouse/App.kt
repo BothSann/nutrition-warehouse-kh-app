@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.mmk.kmpauth.google.GoogleAuthCredentials
 import com.mmk.kmpauth.google.GoogleAuthProvider
 import com.nutritionwarehouse.data.domain.CustomerRepository
-import com.nutritionwarehouse.navigation.Screen
+import com.nutritionwarehouse.shared.navigation.Screen
 import com.nutritionwarehouse.navigation.SetupNavGraph
 import com.nutritionwarehouse.shared.Constants
 

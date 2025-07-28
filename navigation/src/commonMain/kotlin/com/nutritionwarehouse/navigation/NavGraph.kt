@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nutritionwarehouse.auth.AuthScreen
 import com.nutritionwarehouse.home.HomeGraphScreen
+import com.nutritionwarehouse.shared.navigation.Screen
 
 
 @Composable
