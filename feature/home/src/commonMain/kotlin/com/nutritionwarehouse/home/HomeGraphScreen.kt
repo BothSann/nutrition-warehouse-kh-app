@@ -65,6 +65,7 @@ import ContentWithMessageBar
 @Composable
 fun HomeGraphScreen(
     navigateToAuth: () -> Unit,
+    navigateTProfile: () -> Unit,
 ) {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState()
@@ -112,7 +113,7 @@ fun HomeGraphScreen(
             .systemBarsPadding()
     ) {
         CustomDrawer(
-            onProfileClick = {},
+            onProfileClick = navigateTProfile,
             onContactUsClick = {},
             onSignOutClick = {viewModel.signOut(
                 onSuccess = navigateToAuth,

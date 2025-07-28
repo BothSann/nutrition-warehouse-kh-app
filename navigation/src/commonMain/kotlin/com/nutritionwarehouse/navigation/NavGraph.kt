@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nutritionwarehouse.auth.AuthScreen
 import com.nutritionwarehouse.home.HomeGraphScreen
+import com.nutritionwarehouse.profile.ProfileScreen
 import com.nutritionwarehouse.shared.navigation.Screen
 
 
@@ -29,14 +30,21 @@ fun SetupNavGraph (
                 }
             )
         }
+
         composable<Screen.HomeGraph> {
             HomeGraphScreen(
                 navigateToAuth = {
                     navController.navigate(Screen.Auth) {
                         popUpTo<Screen.HomeGraph> { inclusive = true }
                     }
+                },
+                navigateTProfile = {
+                    navController.navigate(Screen.Profile)
                 }
             )
+        }
+        composable<Screen.Profile> {
+            ProfileScreen()
         }
     }
 }

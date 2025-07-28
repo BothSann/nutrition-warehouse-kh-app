@@ -1,4 +1,4 @@
-package com.nutritionwarehouse.profile.component
+package com.nutritionwarehouse.shared.component
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.border
