@@ -11,7 +11,7 @@ enum class BottomBarDestination(
 ) {
     ProductsOverview(
         icon = Resources.Icon.Home,
-        title = "Nutri Warehouse",
+        title = "Nutrition Warehouse",
         screen = Screen.ProductOverview
     ),
     Cart(
