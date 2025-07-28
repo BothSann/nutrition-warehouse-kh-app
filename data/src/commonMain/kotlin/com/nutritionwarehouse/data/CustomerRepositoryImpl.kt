@@ -2,6 +2,7 @@ package com.nutritionwarehouse.data
 
 import com.nutritionwarehouse.data.domain.CustomerRepository
 import com.nutritionwarehouse.shared.domain.Customer
+import com.nutritionwarehouse.shared.util.RequestState
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.auth.auth
@@ -40,6 +41,15 @@ class CustomerRepositoryImpl: CustomerRepository {
             }
         } catch (e: Exception) {
             onError("Error creating customer: ${e.message ?: "Unknown error"}")
+        }
+    }
+
+    override suspend fun signOut(): RequestState<Unit> {
+        return try {
+            Firebase.auth.signOut()
+            RequestState.Success(Unit)
+        } catch (e: Exception) {
+            RequestState.Error("Error signing out: ${e.message ?: "Unknown error"}")
         }
     }
 

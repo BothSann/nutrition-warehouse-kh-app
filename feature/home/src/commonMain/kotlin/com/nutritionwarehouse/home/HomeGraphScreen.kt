@@ -57,10 +57,15 @@ import com.nutritionwarehouse.shared.TextPrimary
 import com.nutritionwarehouse.shared.navigation.Screen
 import com.nutritionwarehouse.shared.util.getScreenWidth
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
+import rememberMessageBarState
+import ContentWithMessageBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeGraphScreen() {
+fun HomeGraphScreen(
+    navigateToAuth: () -> Unit,
+) {
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState()
     val selectedDestination by remember {
@@ -97,6 +102,9 @@ fun HomeGraphScreen() {
         targetValue = if (drawerState.isOpened()) 20.dp else 0.dp
     )
 
+    val viewModel = koinViewModel <HomeGraphViewModel>()
+    val messageBarState = rememberMessageBarState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -106,7 +114,12 @@ fun HomeGraphScreen() {
         CustomDrawer(
             onProfileClick = {},
             onContactUsClick = {},
-            onSignOutClick = {},
+            onSignOutClick = {viewModel.signOut(
+                onSuccess = navigateToAuth,
+                onError = { message ->
+                    messageBarState.addError(message)
+                }
+            )},
             onAdminPanelClick = {}
         )
         Box(
@@ -175,44 +188,52 @@ fun HomeGraphScreen() {
                     )
                 },
             ) { padding->
-                Column (
+                ContentWithMessageBar(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
                             top = padding.calculateTopPadding(),
                             bottom = padding.calculateBottomPadding()
-                        )
+                        ),
+                    messageBarState = messageBarState,
+                    errorMaxLines = 2,
+                    contentBackgroundColor = Surface
                 ) {
-                    NavHost(
+                    Column (
                         modifier = Modifier
-                            .weight(1f),
-                        navController = navController,
-                        startDestination = Screen.ProductOverview,
+                            .fillMaxSize()
                     ) {
-                        composable <Screen.ProductOverview> {  }
-                        composable <Screen.Cart> {  }
-                        composable <Screen.Categories> {  }
+                        NavHost(
+                            modifier = Modifier
+                                .weight(1f),
+                            navController = navController,
+                            startDestination = Screen.ProductOverview,
+                        ) {
+                            composable <Screen.ProductOverview> {  }
+                            composable <Screen.Cart> {  }
+                            composable <Screen.Categories> {  }
 
-                    }
-                    Spacer(modifier = Modifier
-                        .height(12.dp))
-                    Box(
-                        modifier = Modifier
-                            .padding(all = 12.dp)
-                    ) {
-                        BottomBar(
-                            selected = selectedDestination,
-                            onSelect = { destination ->
-                                navController.navigate(destination.screen) {
-                                    launchSingleTop = true
-                                    popUpTo<Screen.ProductOverview> {
-                                        saveState = true
-                                        inclusive = false
+                        }
+                        Spacer(modifier = Modifier
+                            .height(12.dp))
+                        Box(
+                            modifier = Modifier
+                                .padding(all = 12.dp)
+                        ) {
+                            BottomBar(
+                                selected = selectedDestination,
+                                onSelect = { destination ->
+                                    navController.navigate(destination.screen) {
+                                        launchSingleTop = true
+                                        popUpTo<Screen.ProductOverview> {
+                                            saveState = true
+                                            inclusive = false
+                                        }
+                                        restoreState = true
                                     }
-                                    restoreState = true
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }

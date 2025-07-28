@@ -1,5 +1,6 @@
 package com.nutritionwarehouse.data.domain
 
+import com.nutritionwarehouse.shared.util.RequestState
 import dev.gitlive.firebase.auth.FirebaseUser
 
 interface CustomerRepository {
@@ -9,4 +10,5 @@ interface CustomerRepository {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     )
+    suspend fun signOut(): RequestState<Unit>
 }
