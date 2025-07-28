@@ -1,15 +1,20 @@
 package com.nutritionwarehouse.home
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,8 +26,14 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,6 +43,10 @@ import androidx.navigation.compose.rememberNavController
 import com.nutritionwarehouse.home.component.BottomBar
 import com.nutritionwarehouse.home.component.CustomDrawer
 import com.nutritionwarehouse.home.domain.BottomBarDestination
+import com.nutritionwarehouse.home.domain.CustomeDrawerState
+import com.nutritionwarehouse.home.domain.isOpened
+import com.nutritionwarehouse.home.domain.opposite
+import com.nutritionwarehouse.shared.Alpha
 import com.nutritionwarehouse.shared.BebaNeueFont
 import com.nutritionwarehouse.shared.FontSize
 import com.nutritionwarehouse.shared.IconPrimary
@@ -40,6 +55,7 @@ import com.nutritionwarehouse.shared.Surface
 import com.nutritionwarehouse.shared.SurfaceLighter
 import com.nutritionwarehouse.shared.TextPrimary
 import com.nutritionwarehouse.shared.navigation.Screen
+import com.nutritionwarehouse.shared.util.getScreenWidth
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,10 +75,32 @@ fun HomeGraphScreen() {
         }
     }
 
+    val screenWidth = remember { getScreenWidth() }
+    var drawerState by remember { mutableStateOf(CustomeDrawerState.Closed) }
+
+    val offsetValue by remember { derivedStateOf { (screenWidth / 1.5).dp } }
+    val animatedOffset by animateDpAsState(
+        targetValue = if(drawerState.isOpened()) offsetValue else 0.dp,
+    )
+
+    val animatedBackground by animateColorAsState(
+        targetValue = if(drawerState.isOpened()) SurfaceLighter else Surface,
+    )
+
+
+
+    val animatedScale by animateFloatAsState(
+        targetValue = if (drawerState.isOpened()) 0.9f else 1f
+    )
+
+    val animatedRadius by animateDpAsState(
+        targetValue = if (drawerState.isOpened()) 20.dp else 0.dp
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(SurfaceLighter)
+            .background(animatedBackground)
             .systemBarsPadding()
     ) {
         CustomDrawer(
@@ -71,81 +109,113 @@ fun HomeGraphScreen() {
             onSignOutClick = {},
             onAdminPanelClick = {}
         )
-//        Scaffold(
-//            containerColor = Surface,
-//            topBar = {
-//                CenterAlignedTopAppBar(
-//                    title = {
-//                        AnimatedContent (
-//                            targetState = selectedDestination
-//                        ){ destination ->
-//                            Text(
-//                                text = destination.title,
-//                                fontFamily = BebaNeueFont(),
-//                                fontSize = FontSize.LARGE,
-//                                color = TextPrimary
-//                            )
-//                        }
-//                    },
-//                    navigationIcon = {
-//                        IconButton(onClick = {}) {
-//                            Icon(
-//                                painter = painterResource(Resources.Icon.Menu),
-//                                contentDescription = "Menu Icon",
-//                                tint = IconPrimary
-//                            )
-//                        }
-//                    },
-//                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-//                        containerColor = Surface,
-//                        scrolledContainerColor = Surface,
-//                        titleContentColor = TextPrimary,
-//                        navigationIconContentColor = IconPrimary,
-//                        actionIconContentColor = IconPrimary
-//                    )
-//                )
-//            },
-//        ) { padding->
-//            Column (
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(
-//                        top = padding.calculateTopPadding(),
-//                        bottom = padding.calculateBottomPadding()
-//                    )
-//            ) {
-//                NavHost(
-//                    modifier = Modifier
-//                        .weight(1f),
-//                    navController = navController,
-//                    startDestination = Screen.ProductOverview,
-//                ) {
-//                    composable <Screen.ProductOverview> {  }
-//                    composable <Screen.Cart> {  }
-//                    composable <Screen.Categories> {  }
-//
-//                }
-//                Spacer(modifier = Modifier
-//                    .height(12.dp))
-//                Box(
-//                    modifier = Modifier
-//                        .padding(all = 12.dp)
-//                ) {
-//                    BottomBar(
-//                        selected = selectedDestination,
-//                        onSelect = { destination ->
-//                            navController.navigate(destination.screen) {
-//                                launchSingleTop = true
-//                                popUpTo<Screen.ProductOverview> {
-//                                    saveState = true
-//                                    inclusive = false
-//                                }
-//                                restoreState = true
-//                            }
-//                        }
-//                    )
-//                }
-//            }
-//        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(size = animatedRadius))
+                .offset(x = animatedOffset)
+                .scale(scale = animatedScale)
+                .shadow(
+                    elevation = 20.dp,
+                    shape = RoundedCornerShape(size = animatedRadius),
+                    ambientColor = Color.Black.copy(alpha = Alpha.DISABLED) ,
+                    spotColor = Color.Black.copy(alpha = Alpha.DISABLED)
+                )
+        ) {
+            Scaffold(
+                containerColor = Surface,
+                topBar = {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            AnimatedContent (
+                                targetState = selectedDestination
+                            ){ destination ->
+                                Text(
+                                    text = destination.title,
+                                    fontFamily = BebaNeueFont(),
+                                    fontSize = FontSize.LARGE,
+                                    color = TextPrimary
+                                )
+                            }
+                        },
+                        navigationIcon = {
+                            AnimatedContent(
+                                targetState = drawerState
+                            ) { drawer ->
+                                if (drawer.isOpened()) {
+                                    IconButton(onClick = {
+                                        drawerState = drawerState.opposite()
+                                    }) {
+                                        Icon(
+                                            painter = painterResource(Resources.Icon.Close),
+                                            contentDescription = "Close Icon",
+                                            tint = IconPrimary
+                                        )
+                                    }
+                                } else {
+                                    IconButton(onClick = {
+                                        drawerState = drawerState.opposite()
+                                    }) {
+                                        Icon(
+                                            painter = painterResource(Resources.Icon.Menu),
+                                            contentDescription = "Menu Icon",
+                                            tint = IconPrimary
+                                        )
+                                    }
+                                }
+                            }
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = Surface,
+                            scrolledContainerColor = Surface,
+                            titleContentColor = TextPrimary,
+                            navigationIconContentColor = IconPrimary,
+                            actionIconContentColor = IconPrimary
+                        )
+                    )
+                },
+            ) { padding->
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = padding.calculateTopPadding(),
+                            bottom = padding.calculateBottomPadding()
+                        )
+                ) {
+                    NavHost(
+                        modifier = Modifier
+                            .weight(1f),
+                        navController = navController,
+                        startDestination = Screen.ProductOverview,
+                    ) {
+                        composable <Screen.ProductOverview> {  }
+                        composable <Screen.Cart> {  }
+                        composable <Screen.Categories> {  }
+
+                    }
+                    Spacer(modifier = Modifier
+                        .height(12.dp))
+                    Box(
+                        modifier = Modifier
+                            .padding(all = 12.dp)
+                    ) {
+                        BottomBar(
+                            selected = selectedDestination,
+                            onSelect = { destination ->
+                                navController.navigate(destination.screen) {
+                                    launchSingleTop = true
+                                    popUpTo<Screen.ProductOverview> {
+                                        saveState = true
+                                        inclusive = false
+                                    }
+                                    restoreState = true
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
     }
 }
