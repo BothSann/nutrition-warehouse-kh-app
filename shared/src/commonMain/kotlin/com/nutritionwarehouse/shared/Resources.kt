@@ -21,14 +21,16 @@ import nutritionwarehouse.shared.generated.resources.dollar
 import nutritionwarehouse.shared.generated.resources.map_pin
 import nutritionwarehouse.shared.generated.resources.close
 import nutritionwarehouse.shared.generated.resources.book
+import nutritionwarehouse.shared.generated.resources.cambodia
 import nutritionwarehouse.shared.generated.resources.cat
 import nutritionwarehouse.shared.generated.resources.checkmark_image
+import nutritionwarehouse.shared.generated.resources.china
 import nutritionwarehouse.shared.generated.resources.delete
 import nutritionwarehouse.shared.generated.resources.home
 import nutritionwarehouse.shared.generated.resources.shopping_cart_image
 import nutritionwarehouse.shared.generated.resources.google_logo
 import nutritionwarehouse.shared.generated.resources.paypal_logo
-
+import nutritionwarehouse.shared.generated.resources.usa
 
 
 object Resources {
@@ -62,5 +64,11 @@ object Resources {
         val Cat = Res.drawable.cat
         val GoogleLogo = Res.drawable.google_logo
         val PayPalLogo = Res.drawable.paypal_logo
+    }
+
+    object Flag {
+        val China = Res.drawable.china
+        val Cambodia = Res.drawable.cambodia
+        val USA = Res.drawable.usa
     }
 }

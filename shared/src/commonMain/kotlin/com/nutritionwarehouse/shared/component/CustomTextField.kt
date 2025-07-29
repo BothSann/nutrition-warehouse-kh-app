@@ -32,7 +32,7 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String? = null,
-    enabled: Boolean = false,
+    enabled: Boolean = true,
     error: Boolean = false,
     expanded: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions(

@@ -12,6 +12,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.nutritionwarehouse.shared.component.dialog.CountryPickerDialog
+import com.nutritionwarehouse.shared.domain.Country
 
 @Composable
 fun ProfileForm(
@@ -30,6 +32,12 @@ fun ProfileForm(
     phoneNumber: String,
     onPhoneNumberChange: (String) -> Unit,
 ) {
+    CountryPickerDialog(
+        country = Country.Cambodia,
+        onDismiss = {},
+        onConfirmClick = {}
+    )
+
     Column (
         modifier = modifier
             .fillMaxSize()
