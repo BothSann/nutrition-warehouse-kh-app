@@ -50,6 +50,7 @@ import com.nutritionwarehouse.shared.SurfaceSecondary
 import com.nutritionwarehouse.shared.TextPrimary
 import com.nutritionwarehouse.shared.TextSecondary
 import com.nutritionwarehouse.shared.component.CustomTextField
+import com.nutritionwarehouse.shared.component.ErrorCard
 import com.nutritionwarehouse.shared.domain.Country
 import org.jetbrains.compose.resources.painterResource
 
@@ -116,11 +117,11 @@ fun CountryPickerDialog(
                             )
                         }
                     }
-//                } else {
-//                    ErrorCard(
-//                        modifier = Modifier.weight(1f),
-//                        message = "Dial code not found."
-//                    )
+                } else {
+                    ErrorCard(
+                        modifier = Modifier.weight(1f),
+                        message = "Dial code not found."
+                    )
                 }
             }
         },
