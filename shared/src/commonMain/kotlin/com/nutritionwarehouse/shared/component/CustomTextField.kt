@@ -58,8 +58,6 @@ fun CustomTextField(
         placeholder = if (placeholder != null) {
             {
                 Text(
-                    modifier = Modifier
-                        .alpha(Alpha.HALF),
                     text = placeholder,
                     fontSize = FontSize.REGULAR
                 )
