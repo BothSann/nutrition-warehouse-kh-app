@@ -4,6 +4,7 @@ import com.nutritionwarehouse.auth.AuthViewModel
 import com.nutritionwarehouse.data.CustomerRepositoryImpl
 import com.nutritionwarehouse.data.domain.CustomerRepository
 import com.nutritionwarehouse.home.HomeGraphViewModel
+import com.nutritionwarehouse.profile.ProfileViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModelOf
@@ -13,6 +14,7 @@ val sharedModule = module {
     single <CustomerRepository> { CustomerRepositoryImpl() }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
+    viewModelOf(::ProfileViewModel)
 }
 
 

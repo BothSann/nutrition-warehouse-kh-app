@@ -7,6 +7,9 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collectLatest
 
 class CustomerRepositoryImpl: CustomerRepository {
     override fun getCurrentUserId(): String? {
@@ -41,6 +44,40 @@ class CustomerRepositoryImpl: CustomerRepository {
             }
         } catch (e: Exception) {
             onError("Error creating customer: ${e.message ?: "Unknown error"}")
+        }
+    }
+
+    override fun readCustomerFlow(): Flow<RequestState<Customer>> = channelFlow{
+        try {
+            val userId = getCurrentUserId()
+            if (userId != null) {
+                val database = Firebase.firestore
+                database.collection(collectionPath = "customer")
+                    .document(userId)
+                    .snapshots
+                    .collectLatest { document ->
+                        if (document.exists) {
+                            val customer = Customer(
+                                id = document.id,
+                                firstName = document.get("firstName"),
+                                lastName = document.get("lastName"),
+                                email = document.get("email"),
+                                city = document.get("city"),
+                                postalCode = document.get("postalCode"),
+                                address = document.get("address"),
+                                phoneNumber = document.get("phoneNumber"),
+                                cart = document.get("cart"),
+                            )
+                            send(RequestState.Success(data = customer))
+                        } else {
+                            send(RequestState.Error("Customer not found"))
+                        }
+                    }
+            } else {
+                send(RequestState.Error("User not found"))
+            }
+        } catch (e: Exception) {
+            send(RequestState.Error("Error reading customer: ${e.message ?: "Unknown error"}"))
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -29,10 +30,13 @@ import com.nutritionwarehouse.shared.IconPrimary
 import com.nutritionwarehouse.shared.Resources
 import com.nutritionwarehouse.shared.Surface
 import com.nutritionwarehouse.shared.TextPrimary
+import com.nutritionwarehouse.shared.component.ErrorCard
 import com.nutritionwarehouse.shared.component.PrimaryButton
 import com.nutritionwarehouse.shared.component.ProfileForm
 import com.nutritionwarehouse.shared.domain.Country
+import com.nutritionwarehouse.shared.util.DisplayResult
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +44,8 @@ fun ProfileScreen(
     navigateBack: () -> Unit,
 ) {
 
-    var country by remember { mutableStateOf(Country.Cambodia) }
+    val viewModel = koinViewModel<ProfileViewModel>()
+    val screenState = viewModel.screenState
     Scaffold (
         containerColor = Surface,
         topBar = {
@@ -86,31 +91,51 @@ fun ProfileScreen(
                     bottom = 24.dp,
                 )
         ) {
-            ProfileForm(
-                modifier = Modifier.weight(1f),
-                country = country,
-                onCountrySelect = { selectedCountry ->
-                    country = selectedCountry
+            screenState.DisplayResult(
+                onLoading = {},
+                onSuccess = {state->
+                    Column (
+                        modifier = Modifier
+                            .padding(bottom = 24.dp)
+                            .systemBarsPadding()
+                            .background(Surface)
+                            .fillMaxWidth(),
+                        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp),
+                        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                    ) {
+                        ProfileForm(
+                            modifier = Modifier.weight(1f),
+                            country = state.country,
+                            onCountrySelect = { selectedCountry ->
+
+                            },
+                            firstName = state.firstName,
+                            onFirstNameChange = {},
+                            lastName = state.lastName,
+                            onLastNameChange = {},
+                            email = state.email,
+                            phoneNumber = state.phoneNumber?.number ?: "",
+                            onPhoneNumberChange = {},
+                            city = state.city ?: "Phnom Penh",
+                            onCityChange = {},
+                            postalCode = state.postalCode,
+                            onPostalCodeChange = {},
+                            address = state.address,
+                            onAddressChange = {},
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        PrimaryButton(
+                            text = "Update",
+                            icon = Resources.Icon.Checkmark,
+                            onClick = {},
+                        )
+                    }
                 },
-                firstName = "",
-                onFirstNameChange = {},
-                lastName = "",
-                onLastNameChange = {},
-                email = "",
-                phoneNumber = "",
-                onPhoneNumberChange = {},
-                city = "",
-                onCityChange = {},
-                postalCode = null,
-                onPostalCodeChange = {},
-                address = "",
-                onAddressChange = {},
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            PrimaryButton(
-                text = "Update",
-                icon = Resources.Icon.Checkmark,
-                onClick = {},
+                onError = { errorMessage->
+                    ErrorCard(
+                        message = errorMessage,
+                    )
+                }
             )
         }
     }
