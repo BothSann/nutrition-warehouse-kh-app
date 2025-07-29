@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -12,12 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.nutritionwarehouse.shared.Alpha
 import com.nutritionwarehouse.shared.BorderError
 import com.nutritionwarehouse.shared.BorderIdle
 import com.nutritionwarehouse.shared.FontSize
+import com.nutritionwarehouse.shared.IconSecondary
+import com.nutritionwarehouse.shared.SurfaceDarker
 import com.nutritionwarehouse.shared.SurfaceLighter
 import com.nutritionwarehouse.shared.TextPrimary
 
@@ -40,6 +45,7 @@ fun CustomTextField(
 
     TextField(
         modifier = modifier
+            .clip(RoundedCornerShape(size = 6.dp))
             .fillMaxWidth()
             .border(
                 width = 1.dp,
@@ -68,7 +74,17 @@ fun CustomTextField(
             disabledTextColor = TextPrimary.copy(alpha = Alpha.DISABLED),
             focusedContainerColor = SurfaceLighter,
             unfocusedContainerColor = SurfaceLighter,
-            disabledContainerColor = SurfaceLighter
+            disabledContainerColor = SurfaceDarker,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            errorIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            selectionColors = TextSelectionColors(
+                handleColor = IconSecondary,
+                backgroundColor = Color.Unspecified
+            )
+
+
         )
     )
 }
