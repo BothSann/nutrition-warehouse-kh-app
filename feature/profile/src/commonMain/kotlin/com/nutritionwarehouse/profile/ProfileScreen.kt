@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import com.nutritionwarehouse.shared.Resources
 import com.nutritionwarehouse.shared.Surface
 import com.nutritionwarehouse.shared.TextPrimary
 import com.nutritionwarehouse.shared.component.ErrorCard
+import com.nutritionwarehouse.shared.component.LoadingCard
 import com.nutritionwarehouse.shared.component.PrimaryButton
 import com.nutritionwarehouse.shared.component.ProfileForm
 import com.nutritionwarehouse.shared.domain.Country
@@ -45,6 +47,7 @@ fun ProfileScreen(
 ) {
 
     val viewModel = koinViewModel<ProfileViewModel>()
+    val screenReady = viewModel.screenReady
     val screenState = viewModel.screenState
     Scaffold (
         containerColor = Surface,
@@ -91,37 +94,30 @@ fun ProfileScreen(
                     bottom = 24.dp,
                 )
         ) {
-            screenState.DisplayResult(
-                onLoading = {},
+            screenReady.DisplayResult(
+                onLoading = { LoadingCard(modifier = Modifier.fillMaxSize()) },
                 onSuccess = {state->
                     Column (
                         modifier = Modifier
-                            .padding(bottom = 24.dp)
-                            .systemBarsPadding()
-                            .background(Surface)
-                            .fillMaxWidth(),
-                        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp),
-                        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+                            .fillMaxWidth()
                     ) {
                         ProfileForm(
                             modifier = Modifier.weight(1f),
-                            country = state.country,
-                            onCountrySelect = { selectedCountry ->
-
-                            },
-                            firstName = state.firstName,
-                            onFirstNameChange = {},
-                            lastName = state.lastName,
-                            onLastNameChange = {},
-                            email = state.email,
-                            phoneNumber = state.phoneNumber?.number ?: "",
-                            onPhoneNumberChange = {},
-                            city = state.city ?: "Phnom Penh",
-                            onCityChange = {},
-                            postalCode = state.postalCode,
-                            onPostalCodeChange = {},
-                            address = state.address,
-                            onAddressChange = {},
+                            country = screenState.country,
+                            onCountrySelect = viewModel::updateCountry,
+                            firstName = screenState.firstName,
+                            onFirstNameChange = viewModel::updateFirstName,
+                            lastName = screenState.lastName,
+                            onLastNameChange = viewModel::updateLastName,
+                            email = screenState.email,
+                            phoneNumber = screenState.phoneNumber?.number ?: "",
+                            onPhoneNumberChange = viewModel::updatePhoneNumber,
+                            city = screenState.city ?: "Phnom Penh",
+                            onCityChange = viewModel::updateCity,
+                            postalCode = screenState.postalCode,
+                            onPostalCodeChange = viewModel::updatePostalCode,
+                            address = screenState.address,
+                            onAddressChange = viewModel::updateAddress,
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         PrimaryButton(
