@@ -47,7 +47,10 @@ kotlin {
             implementation(project(path = ":feature:auth"))
             implementation(project(path = ":feature:home"))
             implementation(project(path = ":feature:profile"))
+            implementation(project(path = ":feature:admin_panel"))
             implementation(project(path = ":shared"))
+
+
 
         }
         commonTest.dependencies {

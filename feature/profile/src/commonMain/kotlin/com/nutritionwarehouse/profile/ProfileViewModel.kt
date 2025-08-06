@@ -52,28 +52,28 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            screenReady = RequestState.Error("Loading customer data...")
-//            customerRepository.readCustomerFlow().collectLatest { data ->
-////                delay(3000)
-//                if (data.isSuccess()) {
-//                    val fetchedCustomer = data.getSuccessData()
-//                    screenState = ProfileScreenState(
-//                        id = fetchedCustomer.id,
-//                        firstName = fetchedCustomer.firstName,
-//                        lastName = fetchedCustomer.lastName,
-//                        email = fetchedCustomer.email,
-//                        city = fetchedCustomer.city,
-//                        postalCode = fetchedCustomer.postalCode,
-//                        address = fetchedCustomer.address,
-//                        phoneNumber = fetchedCustomer.phoneNumber,
-//                        country = Country.entries.firstOrNull { it.dialCode == fetchedCustomer.phoneNumber?.dialCode }
-//                            ?: Country.Cambodia
-//                    )
-//                    screenReady = RequestState.Success(Unit)
-//                } else if (data.isError()) {
-//                    screenReady = RequestState.Error(data.getErrorMessage())
-//                }
-//            }
+//            screenReady = RequestState.Error("Loading customer data...")
+            customerRepository.readCustomerFlow().collectLatest { data ->
+                delay(3000)
+                if (data.isSuccess()) {
+                    val fetchedCustomer = data.getSuccessData()
+                    screenState = ProfileScreenState(
+                        id = fetchedCustomer.id,
+                        firstName = fetchedCustomer.firstName,
+                        lastName = fetchedCustomer.lastName,
+                        email = fetchedCustomer.email,
+                        city = fetchedCustomer.city,
+                        postalCode = fetchedCustomer.postalCode,
+                        address = fetchedCustomer.address,
+                        phoneNumber = fetchedCustomer.phoneNumber,
+                        country = Country.entries.firstOrNull { it.dialCode == fetchedCustomer.phoneNumber?.dialCode }
+                            ?: Country.Cambodia
+                    )
+                    screenReady = RequestState.Success(Unit)
+                } else if (data.isError()) {
+                    screenReady = RequestState.Error(data.getErrorMessage())
+                }
+            }
         }
     }
     fun updateFirstName(value: String) {
