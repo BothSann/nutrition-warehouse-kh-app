@@ -44,6 +44,9 @@ kotlin {
 
             implementation(libs.messagebar.kmp)
 
+            implementation(libs.firebase.storage)
+
+
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
 
