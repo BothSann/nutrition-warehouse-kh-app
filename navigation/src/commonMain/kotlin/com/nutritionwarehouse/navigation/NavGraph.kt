@@ -5,9 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.nutritionwarehouse.admin_panel.AdminPanelScreen
 import com.nutritionwarehouse.auth.AuthScreen
 import com.nutritionwarehouse.home.HomeGraphScreen
+import com.nutritionwarehouse.manage_product.ManageProductScreen
 import com.nutritionwarehouse.profile.ProfileScreen
 import com.nutritionwarehouse.shared.navigation.Screen
 
@@ -57,6 +59,18 @@ fun SetupNavGraph (
         }
         composable<Screen.AdminPanel> {
             AdminPanelScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                navigateToManageProduct = { id ->
+                    navController.navigate(Screen.ManageProduct(id = id))
+                }
+            )
+        }
+        composable<Screen.ManageProduct> {
+            val id = it.toRoute<Screen.ManageProduct>().id
+            ManageProductScreen(
+                id = id,
                 navigateBack = {
                     navController.navigateUp()
                 }

@@ -22,6 +22,7 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun AdminPanelScreen(
     navigateBack: () -> Unit,
+    navigateToManageProduct: (String?) -> Unit
 ) {
     Scaffold(
         containerColor = Surface,
@@ -64,7 +65,9 @@ fun AdminPanelScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = {
+                    navigateToManageProduct(null)
+                },
                 containerColor = ButtonPrimary,
                 contentColor = IconPrimary,
                 content = {
